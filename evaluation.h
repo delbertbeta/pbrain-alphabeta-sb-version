@@ -24,22 +24,22 @@ extern int*** m_nRecord;
 
 
 
-void evaluationInit(int width,int height);
+void evaluationInit(int width, int height);
 
 int evaluate(int player);
 
 //void AnalysisLine(Psquare p0,int direction,ChessAnalyzeData* data);
 
-void AnalysisBoardType(ChessAnalyzeData* data,int direction,int*** m_nRecord,int x,int y);
+void AnalysisBoardType(ChessAnalyzeData* data, int direction, int*** m_nRecord, int x, int y);
 
-void SetAnalyzed(int direction,int*** m_nRecord,int x,int y,int leftEdge,int rightEdge);
+void SetAnalyzed(int direction, int*** m_nRecord, int x, int y, int leftEdge, int rightEdge);
 
-void SetBoardType(int direction,int*** m_nRecord,int x,int y,int type);
+void SetBoardType(int direction, int*** m_nRecord, int x, int y, int type);
 
-bool isRecordedTwo(int direction,int*** m_nRecord,int x,int y);
+bool isRecordedTwo(int direction, int*** m_nRecord, int x, int y);
 
-void SetLeftBoardType(int direction,int*** m_nRecord,int x,int y,int leftEdge,int type);
+void SetLeftBoardType(int direction, int*** m_nRecord, int x, int y, int leftEdge, int type);
 
-void SetRightBoardType(int direction,int*** m_nRecord,int x,int y,int rightEdge,int type);
+void SetRightBoardType(int direction, int*** m_nRecord, int x, int y, int rightEdge, int type);
 
 #endif
