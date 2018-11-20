@@ -23,13 +23,10 @@ typedef int Tsymbol;
 struct Tsquare;
 typedef Tsquare *Psquare;
 
-
-
 struct Tsquare
 {
-	Tsymbol z;   //0=nothing, 1=my, 2=opponent, 3=outside
+	Tsymbol z;   // 0=nothing, 1=my, 2=opponent, 3=outside
 	short x, y;   //coordinates 0..width-1, 0..height-1
-
 };
 
 #define MAX_BOARD 127

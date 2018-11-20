@@ -140,9 +140,9 @@ void IterDeeping()
 		pipeOut("DEBUG MAX depth:%d,", depth);
 
 		int score;
-		//负极大值搜索 or // alpha-beta搜索
-		score = NegaMax(depth, 0, depth);
-		//score = alphabeta(depth,-9999,9999,0,depth);                     
+		 
+		// alpha-beta搜索
+		score = alphabeta(depth, -9999, 9999, 0, depth);
 		pipeOut("DEBUG Depth value:%d", score);
 		pipeOut("DEBUG BestMove:[%d,%d],%d", bestMove.x, bestMove.y, bestMove.val);
 		pipeOut("DEBUG Time use:%d,time left:%d", GetTickCount() - start_time, info_timeout_turn - (GetTickCount() - start_time));
@@ -163,8 +163,8 @@ void IterDeeping()
 	do_mymove(bestMove.x, bestMove.y);
 }
 
-//负极大值搜索+历史表启发
-int NegaMax(int depth, int player, int MaxDepth)
+// alphaBeta搜索
+int alphabeta(int depth, int alpha, int beta, int player, int MaxDepth)
 {
 	if (depth <= 0)//预判层上的伪叶子结点，计算其启发评价值
 	{
@@ -190,16 +190,13 @@ int NegaMax(int depth, int player, int MaxDepth)
 
 	moveList = MergeSort(moveList, moveListLen); //历史启发排序，alpha-beta时可用
 
-	for (int i = 0; i < moveListLen; i++)
-	{
+	for (int i = 0; i < moveListLen; i++) {
 		if (terminate || GetTickCount() >= stopTime())
 		{
 			pipeOut("DEBUG It's time to terminate");
 			break;
 		}
-
 		MakeMove(moveList[i], player);
-
 		if (isGameOver(moveList[i]))//儿子结点为胜负已分状态（真正的叶子结点），表明player方走这一步走法后会获胜
 		{
 			if (depth == MaxDepth)
@@ -212,21 +209,21 @@ int NegaMax(int depth, int player, int MaxDepth)
 			return 9999;
 		}
 
-		moveList[i].val = -NegaMax(depth - 1, 1 - player, MaxDepth);
-
+		moveList[i].val = -alphabeta(depth - 1, -beta, -alpha, 1 - player, MaxDepth);
 		UnmakeMove(moveList[i]);
 
-		if (bestVal < moveList[i].val)
-		{
-
+		if (moveList[i].val > alpha) {
 			bestVal = moveList[i].val;
 			bestMoveIndex = i;
 			if (depth == MaxDepth)
 			{
 				bestMove = moveList[i];
 			}
+			alpha = moveList[i].val;
 		}
-
+		if (alpha >= beta) {
+			return beta;
+		}
 	}
 
 	if (bestMoveIndex != -1)
@@ -241,107 +238,13 @@ int NegaMax(int depth, int player, int MaxDepth)
 	delete[] moveList;
 	moveList = NULL;
 
-	return bestVal;
+	return alpha;
 }
-
-//固定深度+NegaMax搜索 
-void SimpleSearch()
-{
-	Mov resultMov;
-	int depth = 4;
-
-	bestMove.val = -10000;
-	int score;
-	//负极大值搜索
-	score = NegaMax00(depth, 0, depth);
-	pipeOut("DEBUG Depth value:%d", score);
-	pipeOut("DEBUG BestMove:[%d,%d],%d", bestMove.x, bestMove.y, bestMove.val);
-	do_mymove(bestMove.x, bestMove.y);
-}
-
-//负极大值搜索
-int NegaMax00(int depth, int player, int MaxDepth)
-{
-	if (depth <= 0)//伪叶子结点
-	{
-		return evaluate(player);
-	}
-
-	int bestMoveIndex = -1;
-	int bestVal = -10000;
-	int moveListLen = 0;
-	Mov* moveList = GenerateMoves(moveListLen, player);
-
-	if (moveListLen == 0)
-	{
-		pipeOut("gen movelist is empty");
-		delete[] moveList;
-		moveList = NULL;
-		return evaluate(player);
-	}
-
-	for (int i = 0; i < moveListLen; i++)
-	{
-		if (terminate || GetTickCount() >= stopTime())
-		{
-			pipeOut("DEBUG It's time to terminate");
-			break;
-		}
-
-		MakeMove(moveList[i], player);
-
-		if (isGameOver(moveList[i]))//儿子结点为胜负已分状态，真正的叶子结点
-		{
-			if (depth == MaxDepth)
-			{
-				bestMove = moveList[i];
-			}
-			UnmakeMove(moveList[i]);
-			delete[] moveList;
-			moveList = NULL;
-			return 9999;
-		}
-
-		moveList[i].val = -NegaMax(depth - 1, 1 - player, MaxDepth);
-
-		UnmakeMove(moveList[i]);
-
-		if (bestVal < moveList[i].val)
-		{
-
-			bestVal = moveList[i].val;
-			bestMoveIndex = i;
-			if (depth == MaxDepth)
-			{
-				bestMove = moveList[i];
-			}
-		}
-
-	}
-
-	if (depth == MaxDepth)
-	{
-		bestMove = moveList[bestMoveIndex];
-	}
-	delete[] moveList;
-	moveList = NULL;
-
-	return bestVal;
-}
-
-//alphaBeta搜索
-//int alphabeta(int depth,int alpha,int beta,int player,int MaxDepth)
-//{
-//
-//
-//
-//	return beta;
-//}
 
 //产生当前棋盘的可行棋步，只获取棋盘上已有棋子三字以内的空棋位，并且考虑是否禁手
 Mov* GenerateMoves(int& moveLen, int player)
 {
-	int range = 3;
+	int range = 2;
 	int count = 0;
 	Psquare p = boardb;
 

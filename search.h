@@ -6,7 +6,7 @@
 #include "board.h" 
 #include "historytable.h"
 
-const char *infotext = "name=\"Negamax(SB Version)\", author=\"delbertbeta\", version=\"1.0\", country=\"China\", www=\"https://delbertbeta.cc\"";
+const char *infotext = "name=\"AlphaBeta(SB Version)\", author=\"delbertbeta\", version=\"1.0\", country=\"China\", www=\"https://delbertbeta.cc\"";
 
 extern int firstPlayer;
 int** m_HistoryTable[2];

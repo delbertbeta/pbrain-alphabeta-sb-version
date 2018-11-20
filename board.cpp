@@ -9,9 +9,10 @@ void boardInit()
 	//alocate the board
 	delete[] board;
 	height2 = height + 2;
+	//width2 = width + 2;
 	// board= new Tsquare[(width+10)*(height2)];
-	board = new Tsquare[(width + 2)*(height2)];
-	boardb = board + height2;// 5*height2;
+	board = new Tsquare[(width + 2) * height2];
+	boardb = board + height2; // 5*height2;
 	boardk = boardb + width * height2;
 	// 5 4 3
 	// 6 8 2

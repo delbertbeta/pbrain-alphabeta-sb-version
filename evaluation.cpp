@@ -19,9 +19,6 @@ void evaluationInit(int width,int height){
 	}
 }
 
-
-
-
 /*
 *ÆÀ¼Ûº¯Êý
 */

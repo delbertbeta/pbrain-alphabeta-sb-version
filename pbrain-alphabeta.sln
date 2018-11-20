@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pbrain-negamax", "pbrain-negamax.vcxproj", "{9222F9E9-10FC-4E38-8BD1-388359F02FF8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pbrain-alphabeta", "pbrain-alphabeta.vcxproj", "{9222F9E9-10FC-4E38-8BD1-388359F02FF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
