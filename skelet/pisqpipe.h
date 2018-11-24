@@ -10,7 +10,7 @@ extern int info_game_type;  /* 0:human opponent, 1:AI opponent, 2:tournament, 3:
 extern int info_exact5;     /* 0:five or more stones win, 1:exactly five stones win */
 extern int info_continuous; /* 0:single game, 1:continuous */
 extern int info_fb_check;/*0：不需要进行禁手检测,1:需要进行禁手检查*/
-extern int terminate; /* return from brain_turn when terminate>0 */
+extern int board_terminate; /* return from brain_turn when board_terminate>0 */
 extern unsigned start_time; /* tick count at the beginning of turn */
 extern char dataFolder[256]; /* folder for persistent files */
 

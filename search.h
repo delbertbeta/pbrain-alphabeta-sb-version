@@ -5,6 +5,7 @@
 #include "evaluation.h"
 #include "board.h" 
 #include "historytable.h"
+#include <algorithm>
 
 const char *infotext = "name=\"AlphaBeta(SB Version)\", author=\"delbertbeta\", version=\"1.0\", country=\"China\", www=\"https://delbertbeta.cc\"";
 

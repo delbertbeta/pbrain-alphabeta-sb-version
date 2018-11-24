@@ -133,8 +133,8 @@ void IterDeeping()
 	reSetHistoryTable(width, height);
 
 	Mov resultMov;
-	//迭代加深搜索   
-	for (int depth = 1; depth < 20; (depth < 4 ? depth *= 2 : depth += 1))
+	//迭代加深搜索
+	for (int depth = 1; depth < 20; (depth == 1 ? depth += 1: depth += 2))
 	{
 		bestMove.val = -10000;
 		pipeOut("DEBUG MAX depth:%d,", depth);
@@ -148,7 +148,7 @@ void IterDeeping()
 		pipeOut("DEBUG Time use:%d,time left:%d", GetTickCount() - start_time, info_timeout_turn - (GetTickCount() - start_time));
 
 		// 若强行终止思考，停止搜索   
-		if (terminate)
+		if (board_terminate)
 			break;
 
 		// 若时间已经达到规定时间的一半，再搜索一层的时间可能不够，停止搜索。   
@@ -161,6 +161,10 @@ void IterDeeping()
 
 	}
 	do_mymove(bestMove.x, bestMove.y);
+}
+
+bool compare(Mov& a, Mov& b) {
+	return a.val > b.val;
 }
 
 // alphaBeta搜索
@@ -188,10 +192,11 @@ int alphabeta(int depth, int alpha, int beta, int player, int MaxDepth)
 		moveList[i].val = getHistoryScore(moveList[i], player);
 	}
 
-	moveList = MergeSort(moveList, moveListLen); //历史启发排序，alpha-beta时可用
+	//moveList = MergeSort(moveList, moveListLen); //历史启发排序，alpha-beta时可用
+	std::sort(moveList, moveList + moveListLen, compare);
 
 	for (int i = 0; i < moveListLen; i++) {
-		if (terminate || GetTickCount() >= stopTime())
+		if (board_terminate || GetTickCount() >= stopTime())
 		{
 			pipeOut("DEBUG It's time to terminate");
 			break;
@@ -222,6 +227,10 @@ int alphabeta(int depth, int alpha, int beta, int player, int MaxDepth)
 			alpha = moveList[i].val;
 		}
 		if (alpha >= beta) {
+			bestMove = moveList[i];
+			bestMoveIndex = i;
+			delete[] moveList;
+			moveList = NULL;
 			return beta;
 		}
 	}
@@ -231,10 +240,10 @@ int alphabeta(int depth, int alpha, int beta, int player, int MaxDepth)
 		enterHistoryScore(moveList[bestMoveIndex], depth, player);
 	}
 
-	if (depth == MaxDepth)
-	{
+	/*if (depth == MaxDepth)
+	{*/
 		bestMove = moveList[bestMoveIndex];
-	}
+	//}
 	delete[] moveList;
 	moveList = NULL;
 
@@ -244,7 +253,7 @@ int alphabeta(int depth, int alpha, int beta, int player, int MaxDepth)
 //产生当前棋盘的可行棋步，只获取棋盘上已有棋子三字以内的空棋位，并且考虑是否禁手
 Mov* GenerateMoves(int& moveLen, int player)
 {
-	int range = 2;
+	int range = 3;
 	int count = 0;
 	Psquare p = boardb;
 

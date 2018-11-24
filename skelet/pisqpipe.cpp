@@ -18,7 +18,7 @@ int info_game_type = 1; /* 0:human opponent, 1:AI opponent, 2:tournament, 3:netw
 int info_exact5 = 0; /* 0:five or more stones win, 1:exactly five stones win */
 int info_continuous = 0; /* 0:single game, 1:continuous */
 int info_fb_check = 0;/*0：不需要进行禁手检测,1:需要进行禁手检查*/
-int terminate; /* return from brain_turn when terminate>0 */
+int board_terminate; /* return from brain_turn when board_terminate>0 */
 unsigned start_time; /* tick count at the beginning of turn */
 char dataFolder[256]; /* folder for persistent files */
 int height2;
@@ -113,7 +113,7 @@ static DWORD WINAPI threadLoop(LPVOID)
 /** start thinking */
 static void turn()
 {
-	terminate = 0;
+	board_terminate = 0;
 	ResetEvent(event2);
 	SetEvent(event1);
 }
@@ -121,7 +121,7 @@ static void turn()
 /** stop thinking */
 static void stop()
 {
-	terminate = 1;
+	board_terminate = 1;
 	WaitForSingleObject(event2, INFINITE);
 }
 
